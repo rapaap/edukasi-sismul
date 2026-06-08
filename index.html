@@ -488,9 +488,181 @@
     Mantap! 🎉
   </div>
 
+  <!-- ══════════════════════
+       PANEL DSP DEBUG (untuk presentasi)
+       Tekan Ctrl+Shift+D untuk toggle
+  ═══════════════════════ -->
+  <div id="dsp-debug-panel"
+       class="hidden fixed bottom-4 right-4 z-50 w-80 bg-gray-900 text-green-400 rounded-2xl p-4 shadow-2xl border border-green-800"
+       style="font-family:monospace;font-size:0.72rem;">
+    <div class="flex items-center justify-between mb-3">
+      <span class="font-bold text-green-300 text-xs">📡 DSP Debug Panel</span>
+      <div class="flex gap-2">
+        <span class="text-gray-500 text-xs">Ctrl+Shift+D</span>
+        <button onclick="toggleDSPDebug()" class="text-gray-500 hover:text-white text-xs">✕</button>
+      </div>
+    </div>
+
+    <!-- Signal Processing -->
+    <div class="mb-3">
+      <p class="text-yellow-400 font-bold mb-1 text-xs">📊 Signal Processing</p>
+      <div class="grid grid-cols-2 gap-1 text-xs">
+        <div class="bg-gray-800 rounded px-2 py-1">
+          <span class="text-gray-400">RMS Energy:</span><br>
+          <span id="dbg-rms" class="text-green-300 font-bold">–</span>
+        </div>
+        <div class="bg-gray-800 rounded px-2 py-1">
+          <span class="text-gray-400">ZCR:</span><br>
+          <span id="dbg-zcr" class="text-green-300 font-bold">–</span>
+        </div>
+        <div class="bg-gray-800 rounded px-2 py-1">
+          <span class="text-gray-400">Spectral Centroid:</span><br>
+          <span id="dbg-sc" class="text-green-300 font-bold">–</span>
+        </div>
+        <div class="bg-gray-800 rounded px-2 py-1">
+          <span class="text-gray-400">Durasi Aktif:</span><br>
+          <span id="dbg-dur" class="text-green-300 font-bold">–</span>
+        </div>
+        <div class="bg-gray-800 rounded px-2 py-1">
+          <span class="text-gray-400">Skor Korelasi:</span><br>
+          <span id="dbg-kor" class="text-blue-300 font-bold">–</span>
+        </div>
+        <div class="bg-gray-800 rounded px-2 py-1">
+          <span class="text-gray-400">Skor Akhir:</span><br>
+          <span id="dbg-skor" class="text-yellow-300 font-bold">–</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Keamanan -->
+    <div class="mb-3">
+      <p class="text-yellow-400 font-bold mb-1 text-xs">🔒 Keamanan (SHA-256)</p>
+      <div class="bg-gray-800 rounded px-2 py-1 text-xs">
+        <span class="text-gray-400">Hash Pengguna:</span><br>
+        <span id="dbg-hash" class="text-purple-300 break-all">–</span>
+      </div>
+    </div>
+
+    <!-- Kompresi -->
+    <div class="mb-3">
+      <p class="text-yellow-400 font-bold mb-1 text-xs">📦 Kompresi RLE</p>
+      <div class="grid grid-cols-2 gap-1 text-xs">
+        <div class="bg-gray-800 rounded px-2 py-1">
+          <span class="text-gray-400">Original:</span><br>
+          <span id="dbg-orig" class="text-orange-300 font-bold">–</span>
+        </div>
+        <div class="bg-gray-800 rounded px-2 py-1">
+          <span class="text-gray-400">Compressed:</span><br>
+          <span id="dbg-comp" class="text-orange-300 font-bold">–</span>
+        </div>
+      </div>
+      <div class="bg-gray-800 rounded px-2 py-1 mt-1 text-xs">
+        <span class="text-gray-400">Rasio Kompresi:</span>
+        <span id="dbg-rasio" class="text-green-300 font-bold ml-2">–</span>
+      </div>
+    </div>
+
+    <!-- Browser support -->
+    <div>
+      <p class="text-yellow-400 font-bold mb-1 text-xs">🌐 Browser Support</p>
+      <div id="dbg-browser" class="text-xs text-gray-400">Memuat...</div>
+    </div>
+  </div>
+
+  <!-- Tombol toggle debug (kecil, pojok kanan bawah) -->
+  <button id="debug-toggle-btn"
+          onclick="toggleDSPDebug()"
+          title="Toggle DSP Debug Panel (Ctrl+Shift+D)"
+          class="fixed bottom-4 right-4 z-40 w-10 h-10 rounded-full bg-gray-800 text-green-400
+                 flex items-center justify-center shadow-lg hover:bg-gray-700 transition-all
+                 text-lg opacity-40 hover:opacity-100"
+          style="font-size:1rem;">📡</button>
+
   <!-- ── SCRIPTS ── -->
   <script src="js/security.js"></script>
   <script src="js/dsp.js"></script>
   <script src="js/main.js"></script>
+
+  <script>
+  // ── DSP DEBUG PANEL ─────────────────────────────────────────
+  let dspDebugVisible = false;
+
+  function toggleDSPDebug() {
+    dspDebugVisible = !dspDebugVisible;
+    const panel = document.getElementById('dsp-debug-panel');
+    const btn   = document.getElementById('debug-toggle-btn');
+    panel.classList.toggle('hidden', !dspDebugVisible);
+    btn.style.opacity = dspDebugVisible ? '1' : '0.4';
+    if (dspDebugVisible) initDebugPanel();
+  }
+
+  function initDebugPanel() {
+    // Browser support check
+    const support = EngliKidsDSP.checkBrowserSupport?.() || {};
+    const detail  = support.detail || {};
+    document.getElementById('dbg-browser').innerHTML = [
+      `WebAudio: <span class="${detail.webAudio ? 'text-green-400' : 'text-red-400'}">${detail.webAudio ? '✅' : '❌'}</span>`,
+      `MediaDevices: <span class="${detail.mediaDevices ? 'text-green-400' : 'text-red-400'}">${detail.mediaDevices ? '✅' : '❌'}</span>`,
+      `MediaRecorder: <span class="${detail.mediaRecorder ? 'text-green-400' : 'text-red-400'}">${detail.mediaRecorder ? '✅' : '❌'}</span>`,
+      `WebCrypto: <span class="${window.crypto?.subtle ? 'text-green-400' : 'text-red-400'}">${window.crypto?.subtle ? '✅' : '❌'}</span>`,
+    ].join(' · ');
+
+    // Hash dari profil sesi
+    try {
+      const profil = JSON.parse(sessionStorage.getItem('englikids_profil') || '{}');
+      document.getElementById('dbg-hash').textContent = profil.namaHash || '(belum login)';
+    } catch(e) {}
+
+    // Kompresi dari riwayat terakhir
+    try {
+      const riwayat = JSON.parse(localStorage.getItem('englikids_riwayat') || '[]');
+      if (riwayat.length > 0) {
+        const last = riwayat[riwayat.length - 1];
+        const sesiRaw = last.sesiTerkompresi || '';
+        // Estimasi panjang original dari dekompresi
+        document.getElementById('dbg-rasio').textContent  = last.kompresiRasio || '–';
+        document.getElementById('dbg-comp').textContent   = sesiRaw.length + ' char';
+        // Estimasi original
+        try {
+          const decomp = EngliKidsSecurity.decompressRLE(sesiRaw);
+          document.getElementById('dbg-orig').textContent = decomp.length + ' char';
+        } catch(e) {
+          document.getElementById('dbg-orig').textContent = '–';
+        }
+      }
+    } catch(e) {}
+  }
+
+  // Update debug panel setelah skor dihitung
+  function updateDebugDSP(result) {
+    if (!dspDebugVisible || !result) return;
+    document.getElementById('dbg-rms').textContent  = result.detail?.rekaman?.rms  || '–';
+    document.getElementById('dbg-zcr').textContent  = result.detail?.rekaman?.zcr  || '–';
+    document.getElementById('dbg-sc').textContent   = result.detail?.rekaman?.sc   || '–';
+    document.getElementById('dbg-dur').textContent  = result.detail?.rekaman?.durasi || '–';
+    document.getElementById('dbg-kor').textContent  = result.skorKorelasi + '%' || '–';
+    document.getElementById('dbg-skor').textContent = result.skorAkhir || '–';
+  }
+
+  // Keyboard shortcut Ctrl+Shift+D
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+      e.preventDefault();
+      toggleDSPDebug();
+    }
+  });
+
+  // Patch main.js prosesAudio agar update debug panel
+  document.addEventListener('DOMContentLoaded', () => {
+    const _oriProsesAudio = window.prosesAudio;
+    // Hook ke EngliKidsDSP.scorePronunciation output
+    const _oriScore = EngliKidsDSP.scorePronunciation;
+    EngliKidsDSP.scorePronunciation = async function(buf, url) {
+      const result = await _oriScore.call(this, buf, url);
+      updateDebugDSP(result);
+      return result;
+    };
+  });
+  </script>
 </body>
 </html>
