@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EngliKids 🦉 — Mulai Belajar!</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            fredoka: ['Fredoka One', 'cursive'],
+            nunito:  ['Nunito', 'sans-serif'],
+          },
+          colors: {
+            sunny:  '#FFD93D',
+            coral:  '#FF6B6B',
+            mint:   '#6BCB77',
+            sky:    '#4DA8DA',
+            purple: '#A06CD5',
+            peach:  '#FFA07A',
+            cream:  '#FFF8EC',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    :root {
+      --coral: #FF6B6B;
+      --sunny: #FFD93D;
+      --mint:  #6BCB77;
+      --sky:   #4DA8DA;
+      --purple:#A06CD5;
+      --peach: #FFA07A;
+      --cream: #FFF8EC;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(160deg, #FF9A44 0%, #FF6B6B 40%, #c84b8a 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Floating bubbles bg ── */
+    .bg-bubble {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.12;
+      animation: floatBubble linear infinite;
+    }
+    @keyframes floatBubble {
+      0%   { transform: translateY(100vh) scale(0.8); opacity: 0; }
+      10%  { opacity: 0.12; }
+      90%  { opacity: 0.12; }
+      100% { transform: translateY(-20vh) scale(1.1); opacity: 0; }
+    }
+
+    /* ── Card ── */
+    .card {
+      background: #fff;
+      border-radius: 2.5rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18), 0 8px 0 rgba(0,0,0,0.08);
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ── Owl mascot bounce ── */
+    @keyframes owlBounce {
+      0%,100% { transform: translateY(0) rotate(-3deg); }
+      50%      { transform: translateY(-12px) rotate(3deg); }
+    }
+    .owl-mascot { animation: owlBounce 2.8s ease-in-out infinite; display: inline-block; }
+
+    /* ── Star burst deco ── */
+    .star-deco {
+      position: absolute;
+      font-size: 1.6rem;
+      animation: starSpin 4s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes starSpin {
+      0%,100% { transform: rotate(-10deg) scale(1); }
+      50%      { transform: rotate(10deg) scale(1.15); }
+    }
+
+    /* ── Avatar selection ── */
+    .avatar-btn {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      border: 3px solid #e5e7eb;
+      background: var(--cream);
+      font-size: 2rem;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.34,1.56,0.64,1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .avatar-btn:hover {
+      transform: scale(1.12);
+      border-color: var(--coral);
+    }
+    .avatar-btn.selected {
+      border-color: var(--coral);
+      background: #fff0f0;
+      box-shadow: 0 0 0 4px rgba(255,107,107,0.25);
+      transform: scale(1.18);
+    }
+    .avatar-btn.selected::after {
+      content: '✓';
+      position: absolute;
+      bottom: -6px;
+      right: -6px;
+      width: 20px;
+      height: 20px;
+      background: var(--mint);
+      border-radius: 50%;
+      font-size: 0.65rem;
+      color: white;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 20px;
+      text-align: center;
+    }
+
+    /* ── Name input ── */
+    .name-input {
+      width: 100%;
+      padding: 14px 20px 14px 52px;
+      border: 2.5px solid #e5e7eb;
+      border-radius: 1.25rem;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #374151;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #FAFAFA;
+    }
+    .name-input:focus {
+      border-color: var(--coral);
+      box-shadow: 0 0 0 4px rgba(255,107,107,0.15);
+      background: #fff;
+    }
+
+    /* ── Start button ── */
+    .btn-start {
+      width: 100%;
+      padding: 18px;
+      border-radius: 1.5rem;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.4rem;
+      letter-spacing: 0.03em;
+      color: white;
+      background: linear-gradient(135deg, #FF6B6B, #FFA07A);
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 5px 0 #cc3a3a, 0 12px 30px rgba(255,107,107,0.4);
+      transition: all 0.15s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-start::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+      border-radius: inherit;
+    }
+    .btn-start:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 0 #cc3a3a, 0 16px 35px rgba(255,107,107,0.45);
+    }
+    .btn-start:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 #cc3a3a, 0 6px 20px rgba(255,107,107,0.3);
+    }
+    .btn-start:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ── Security badge ── */
+    .security-badge {
+      background: linear-gradient(90deg, #e6f9ee, #e6f4fb);
+      border: 1.5px solid #b7e4c7;
+      border-radius: 1rem;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #2d7a4f;
+    }
+
+    /* ── Slide in animation ── */
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    .slide-up { animation: slideUp 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+    .slide-up-2 { animation: slideUp 0.5s 0.1s cubic-bezier(0.34,1.56,0.64,1) both; }
+    .slide-up-3 { animation: slideUp 0.5s 0.2s cubic-bezier(0.34,1.56,0.64,1) both; }
+
+    /* ── Error shake ── */
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%,60% { transform: translateX(-8px); }
+      40%,80% { transform: translateX(8px); }
+    }
+    .shake { animation: shake 0.4s ease-in-out; }
+
+    /* ── Top bar icon emojis ── */
+    .topbar-icon {
+      font-size: 1.5rem;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+      animation: topbarFloat 3s ease-in-out infinite;
+    }
+    @keyframes topbarFloat {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-6px); }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col items-center justify-center py-8 px-4">
+
+  <!-- Floating background bubbles -->
+  <div class="bg-bubble w-48 h-48 bg-white" style="left:-5%;animation-duration:12s;animation-delay:0s;"></div>
+  <div class="bg-bubble w-32 h-32 bg-yellow-300" style="left:60%;animation-duration:9s;animation-delay:3s;"></div>
+  <div class="bg-bubble w-24 h-24 bg-green-300" style="left:30%;animation-duration:14s;animation-delay:6s;"></div>
+  <div class="bg-bubble w-40 h-40 bg-purple-300" style="left:80%;animation-duration:11s;animation-delay:1.5s;"></div>
+
+  <!-- Star deco -->
+  <div class="star-deco" style="top:8%;left:5%;">⭐</div>
+  <div class="star-deco" style="top:12%;right:8%;animation-delay:1s;">✨</div>
+  <div class="star-deco" style="bottom:12%;left:7%;animation-delay:2s;">🌟</div>
+  <div class="star-deco" style="bottom:8%;right:5%;animation-delay:0.5s;">⭐</div>
+
+  <!-- Top emoji bar -->
+  <div class="flex gap-4 mb-5 z-10 slide-up">
+    <span class="topbar-icon" style="animation-delay:0s;">⭐</span>
+    <span class="topbar-icon" style="animation-delay:0.3s;">⭐</span>
+    <span class="topbar-icon" style="animation-delay:0.6s;">⭐</span>
+    <span class="topbar-icon" style="animation-delay:0.9s;">⭐</span>
+    <span class="topbar-icon" style="animation-delay:1.2s;">⭐</span>
+    <span class="topbar-icon" style="animation-delay:1.5s;">⭐</span>
+  </div>
+
+  <!-- MAIN CARD -->
+  <div class="card w-full max-w-sm px-8 py-8 slide-up-2">
+
+    <!-- Mascot + Title -->
+    <div class="text-center mb-6">
+      <div class="text-7xl mb-2 owl-mascot">🐧</div>
+      <h1 class="font-fredoka text-5xl leading-none"
+          style="background:linear-gradient(135deg,#FF6B6B,#FFD93D,#6BCB77,#4DA8DA);
+                 -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+                 background-clip:text;filter:drop-shadow(2px 3px 0 rgba(0,0,0,0.1));">
+        EnglishKu
+      </h1>
+      <p class="font-nunito font-700 text-sm text-gray-400 mt-1 tracking-wide uppercase">
+        Worksheet Interaktif Bahasa Inggris SD
+      </p>
+    </div>
+
+    <!-- Security badge -->
+    <div class="security-badge mb-5 slide-up-3">
+      <span>🔒</span>
+      <span>Koneksi aman · Data dienkripsi SHA-256 · Kompresi RLE aktif</span>
+    </div>
+
+    <!-- Nama -->
+    <div class="mb-4">
+      <label class="font-nunito font-800 text-sm text-gray-600 mb-1.5 block">
+        Nama Kamu 👤
+      </label>
+      <div class="relative">
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-xl pointer-events-none">✏️</span>
+        <input
+          id="input-nama"
+          type="text"
+          class="name-input"
+          placeholder="Tulis namamu di sini..."
+          maxlength="30"
+          autocomplete="off"
+        />
+      </div>
+      <p id="error-nama" class="text-coral text-xs font-700 mt-1.5 hidden">
+        ⚠️ Nama tidak boleh kosong ya!
+      </p>
+    </div>
+
+    <!-- Pilih Avatar -->
+    <div class="mb-6">
+      <label class="font-nunito font-800 text-sm text-gray-600 mb-3 block">
+        Pilih Avatarmu 🎭
+      </label>
+      <div class="flex gap-3 justify-center flex-wrap">
+        <button class="avatar-btn" data-avatar="🦁" onclick="pilihAvatar(this, '🦁')" title="Singa">🦁</button>
+        <button class="avatar-btn" data-avatar="🐯" onclick="pilihAvatar(this, '🐯')" title="Harimau">🐯</button>
+        <button class="avatar-btn" data-avatar="🐸" onclick="pilihAvatar(this, '🐸')" title="Katak">🐸</button>
+        <button class="avatar-btn" data-avatar="🐧" onclick="pilihAvatar(this, '🐧')" title="Pinguin">🐧</button>
+        <button class="avatar-btn" data-avatar="🦊" onclick="pilihAvatar(this, '🦊')" title="Rubah">🦊</button>
+      </div>
+      <p id="error-avatar" class="text-coral text-xs font-700 mt-2 text-center hidden">
+        ⚠️ Pilih avatar dulu ya!
+      </p>
+    </div>
+
+    <!-- Start Button -->
+    <button id="btn-mulai" class="btn-start" onclick="handleMulai()">
+      Mulai Belajar! 🚀
+    </button>
+
+    <p class="font-nunito text-xs text-gray-400 text-center mt-3">
+      Semangat belajar &amp; raih bintang terbanyak! ⭐
+    </p>
+  </div>
+
+  <!-- JS security.js untuk hash -->
+  <script>
+    // ── Inline minimal security (hashPassword) ──────────────
+    // (full security.js dimuat di index.html)
+    async function hashPasswordSimple(str) {
+      if (!window.crypto || !window.crypto.subtle) return str;
+      const enc  = new TextEncoder();
+      const buf  = await window.crypto.subtle.digest('SHA-256', enc.encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+    }
+
+    // ── RLE compress ──────────────────────────────────────────
+    function compressRLE(text) {
+      if (!text) return '';
+      const hasil = [];
+      let i = 0;
+      while (i < text.length) {
+        const c = text[i]; let n = 1;
+        while (i + n < text.length && text[i + n] === c) n++;
+        hasil.push(n, c);
+        i += n;
+      }
+      return hasil.join('|');
+    }
+
+    // ── State ─────────────────────────────────────────────────
+    let avatarTerpilih = '';
+
+    function pilihAvatar(btn, emoji) {
+      document.querySelectorAll('.avatar-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      avatarTerpilih = emoji;
+      document.getElementById('error-avatar').classList.add('hidden');
+    }
+
+    // ── Validasi & pindah ke index.html ──────────────────────
+    async function handleMulai() {
+      const namaEl   = document.getElementById('input-nama');
+      const errNama  = document.getElementById('error-nama');
+      const errAvatar = document.getElementById('error-avatar');
+      const nama     = namaEl.value.trim();
+      let valid = true;
+
+      if (!nama) {
+        errNama.classList.remove('hidden');
+        namaEl.classList.add('shake');
+        setTimeout(() => namaEl.classList.remove('shake'), 400);
+        valid = false;
+      } else {
+        errNama.classList.add('hidden');
+      }
+
+      if (!avatarTerpilih) {
+        errAvatar.classList.remove('hidden');
+        valid = false;
+      } else {
+        errAvatar.classList.add('hidden');
+      }
+
+      if (!valid) return;
+
+      // Hash nama untuk keamanan (SHA-256)
+      const namaHash = await hashPasswordSimple(nama + '_englikids_v2');
+      // Kompresi profil (RLE)
+      const profilStr      = `${nama}|${avatarTerpilih}|${new Date().toISOString()}`;
+      const profilKompresi = compressRLE(profilStr);
+
+      // Simpan ke sessionStorage (bukan localStorage agar hilang saat tab ditutup)
+      const profil = {
+        nama,
+        avatar: avatarTerpilih,
+        namaHash: namaHash.slice(0, 16) + '...',
+        profilKompresi,
+        waktuMulai: new Date().toISOString(),
+      };
+      sessionStorage.setItem('englikids_profil', JSON.stringify(profil));
+
+      // Animasi tombol sebelum pindah
+      const btn = document.getElementById('btn-mulai');
+      btn.textContent = 'Siap! ✨';
+      btn.disabled = true;
+      btn.style.background = 'linear-gradient(135deg, #6BCB77, #4DA8DA)';
+
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 700);
+    }
+
+    // ── Enter key support ─────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('input-nama').addEventListener('keypress', e => {
+        if (e.key === 'Enter') handleMulai();
+      });
+
+      // Cek jika sudah ada profil sebelumnya
+      const profilLama = sessionStorage.getItem('englikids_profil');
+      if (profilLama) {
+        try {
+          const p = JSON.parse(profilLama);
+          if (p.nama) document.getElementById('input-nama').value = p.nama;
+          if (p.avatar) {
+            const avatarBtn = document.querySelector(`[data-avatar="${p.avatar}"]`);
+            if (avatarBtn) pilihAvatar(avatarBtn, p.avatar);
+          }
+        } catch(e) {}
+      }
+    });
+  </script>
+</body>
+</html>

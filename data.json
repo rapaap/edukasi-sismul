@@ -1,0 +1,95 @@
+{
+  "soal": [
+    {
+      "id": 1,
+      "tipe": "ucapkan",
+      "kata": "Apple",
+      "terjemahan": "Apel",
+      "emoji": "🍎",
+      "audio_referensi": "./assets/audio/apple.mp3",
+      "kategori": "buah",
+      "tingkat_kesulitan": 1
+    },
+    {
+      "id": 2,
+      "tipe": "ucapkan",
+      "kata": "Cat",
+      "terjemahan": "Kucing",
+      "emoji": "🐈",
+      "audio_referensi": "./assets/audio/cat.mp3",
+      "kategori": "hewan",
+      "tingkat_kesulitan": 1
+    },
+    {
+      "id": 3,
+      "tipe": "cocokkan",
+      "judul": "Cocokkan Kata!",
+      "instruksi": "Pilih terjemahan yang BENAR untuk kata berikut!",
+      "kata": "Dog",
+      "terjemahan_benar": "Anjing",
+      "pilihan": ["Kucing", "Anjing", "Ikan", "Burung"],
+      "emoji": "🐕",
+      "kategori": "hewan",
+      "tingkat_kesulitan": 1
+    },
+    {
+      "id": 4,
+      "tipe": "ucapkan",
+      "kata": "Book",
+      "terjemahan": "Buku",
+      "gambar": null,
+      "emoji": "📚",
+      "audio_referensi": "./assets/audio/book.mp3",
+      "kategori": "benda",
+      "tingkat_kesulitan": 1
+    },
+    {
+      "id": 5,
+      "tipe": "cocokkan",
+      "judul": "Cocokkan Kata!",
+      "instruksi": "Pilih terjemahan yang BENAR untuk kata berikut!",
+      "kata": "Red",
+      "terjemahan_benar": "Merah",
+      "pilihan": ["Biru", "Hijau", "Merah", "Kuning"],
+      "gambar": null,
+      "emoji": "🔴",
+      "kategori": "warna",
+      "tingkat_kesulitan": 1
+    },
+    {
+      "id": 6,
+      "tipe": "ucapkan",
+      "kata": "Ball",
+      "terjemahan": "Bola",
+      "gambar": null,
+      "emoji": "⚽",
+      "audio_referensi": "./assets/audio/ball.mp3",
+      "kategori": "benda",
+      "tingkat_kesulitan": 1
+    },
+    {
+      "id": 7,
+      "tipe": "cocokkan",
+      "judul": "Cocokkan Kata!",
+      "instruksi": "Pilih terjemahan yang BENAR untuk kata berikut!",
+      "kata": "Happy",
+      "terjemahan_benar": "Senang",
+      "pilihan": ["Sedih", "Marah", "Senang", "Takut"],
+      "gambar": null,
+      "emoji": "😊",
+      "kategori": "perasaan",
+      "tingkat_kesulitan": 1
+    },
+    {
+      "id": 8,
+      "tipe": "ucapkan",
+      "kata": "Sun",
+      "terjemahan": "Matahari",
+      "gambar": null,
+      "emoji": "☀️",
+      "audio_referensi": "./assets/audio/sun.mp3",
+      "kategori": "alam",
+      "tingkat_kesulitan": 1
+    }
+  ]
+}
